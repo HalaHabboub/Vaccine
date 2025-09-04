@@ -13,7 +13,7 @@ interface GrokResponse {
 }
 
 class GrokClient {
-  private apiUrl = 'http://localhost:3001/api/grok/chat'
+  private apiUrl = process.env.NODE_ENV === 'production' ? '/api/grok' : 'http://localhost:3001/api/grok/chat'
 
   async sendMessage(messages: GrokMessage[]): Promise<string> {
     console.log('Sending to Grok proxy:', { messages })

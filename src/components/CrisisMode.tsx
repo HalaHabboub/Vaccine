@@ -56,14 +56,14 @@ export function CrisisMode() {
     setUploadedImages(prev => prev.filter((_, i) => i !== index))
   }
 
-  const convertImageToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader()
-      reader.onload = () => resolve(reader.result as string)
-      reader.onerror = reject
-      reader.readAsDataURL(file)
-    })
-  }
+  // const convertImageToBase64 = (file: File): Promise<string> => {
+  //   return new Promise((resolve, reject) => {
+  //     const reader = new FileReader()
+  //     reader.onload = () => resolve(reader.result as string)
+  //     reader.onerror = reject
+  //     reader.readAsDataURL(file)
+  //   })
+  // }
 
   const typeMessage = (message: string, onComplete: (message: string) => void) => {
     setCurrentTypingMessage('')

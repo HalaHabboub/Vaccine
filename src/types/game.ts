@@ -29,7 +29,7 @@ export interface Phase {
   id: string
   type: 'scenario' | 'lesson' | 'practice' | 'completion'
   narrative: string
-  choices: Choice[]
+  choices?: Choice[]
   lessonText?: string
   steps?: StoryStep[] // New card-based progression
 }
