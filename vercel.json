@@ -3,8 +3,5 @@
     "api/grok.js": {
       "maxDuration": 30
     }
-  },
-  "env": {
-    "VITE_GROK_API_KEY": "@grok-api-key"
   }
 }
