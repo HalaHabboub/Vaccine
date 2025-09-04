@@ -122,6 +122,7 @@ export function GameControllerSimple({ onBadgeComplete }: GameControllerSimplePr
   }
 
   const handleChoice = (choiceId: string) => {
+    if (!currentPhaseData.choices) return
     const choice = currentPhaseData.choices.find(c => c.id === choiceId)
     if (!choice) return
 
@@ -253,18 +254,19 @@ export function GameControllerSimple({ onBadgeComplete }: GameControllerSimplePr
   }
 
   // Check if we should show choices
-  const shouldShowChoices = currentStepData?.requiresChoiceToProgress && currentPhaseData.choices.length > 0
+  const choices = currentPhaseData.choices || []
+  const shouldShowChoices = currentStepData?.requiresChoiceToProgress && choices.length > 0
 
   // For step 5, filter choices to only show the opposite of what was tried in step 3
-  let availableChoices = currentPhaseData.choices
+  let availableChoices = choices
   if (currentPhaseData.id === 'step-5-second-hate-comment') {
     const triedAngryFirst = gameState.triedChoices.includes('reply-angry-1')
     const triedIgnoreFirst = gameState.triedChoices.includes('ignore-1')
     
     if (triedAngryFirst) {
-      availableChoices = currentPhaseData.choices.filter(c => c.id === 'ignore-2')
+      availableChoices = choices.filter(c => c.id === 'ignore-2')
     } else if (triedIgnoreFirst) {
-      availableChoices = currentPhaseData.choices.filter(c => c.id === 'reply-angry-2')
+      availableChoices = choices.filter(c => c.id === 'reply-angry-2')
     }
   }
 
@@ -413,7 +415,7 @@ export function GameControllerSimple({ onBadgeComplete }: GameControllerSimplePr
                 <h3 className="text-2xl font-bold text-neutral-800 mb-4">How do you respond?</h3>
                 
                 {/* Freeform input */}
-                {availableChoices.some(c => c.isFreeform) ? (
+                {availableChoices && availableChoices.some(c => c.isFreeform) ? (
                   <div className="w-full space-y-4">
                     <textarea
                       value={gameState.freeformInput || ''}
@@ -431,7 +433,7 @@ export function GameControllerSimple({ onBadgeComplete }: GameControllerSimplePr
                   </div>
                 ) : (
                   <div className="space-y-4 w-full">
-                    {availableChoices.map((choice) => (
+                    {availableChoices && availableChoices.map((choice) => (
                       <button
                         key={choice.id}
                         onClick={() => handleChoice(choice.id)}

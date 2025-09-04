@@ -71,9 +71,9 @@ export function ScenarioCard({ phase, onChoice, badgeName, progress }: ScenarioC
           )}
 
           {/* Choices */}
-          {phase.choices.length > 0 && (
+          {phase.choices && phase.choices.length > 0 && (
             <div className="space-y-4">
-              {phase.choices.map((choice, index) => (
+              {phase.choices!.map((choice, index) => (
                 <motion.button
                   key={choice.id}
                   initial={{ opacity: 0, x: -20 }}

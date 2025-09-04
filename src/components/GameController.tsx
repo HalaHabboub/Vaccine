@@ -82,6 +82,7 @@ export function GameController() {
   }
 
   const handleChoice = (choiceId: string) => {
+    if (!currentPhaseData.choices) return
     const choice = currentPhaseData.choices.find(c => c.id === choiceId)
     if (!choice) return
     
@@ -152,11 +153,13 @@ export function GameController() {
   const stressLevel = 100 - gameState.meters.mentalHealth
   
   const shouldForceOtherChoices = () => {
+    const choices = currentPhaseData.choices
+    if (!choices) return false
     // Force trying both bad choices in Phase 1 (comment 1)
     if (currentPhaseData.id === 'bad-strategies-comment1') {
-      const phaseChoiceIds = currentPhaseData.choices.map(c => c.id)
+      const phaseChoiceIds = choices.map(c => c.id)
       const triedInThisPhase = gameState.triedChoices.filter(id => phaseChoiceIds.includes(id))
-      return triedInThisPhase.length < currentPhaseData.choices.length
+      return triedInThisPhase.length < choices.length
     }
     
     // For comment 2, check if user tried the OPPOSITE choice from comment 1
@@ -305,7 +308,7 @@ export function GameController() {
 
           {/* Next Button, Choice Buttons, or Freeform Input */}
           <AnimatePresence>
-            {showChoices && currentPhaseData.choices.length > 0 ? (
+            {showChoices && currentPhaseData.choices && currentPhaseData.choices.length > 0 ? (
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}

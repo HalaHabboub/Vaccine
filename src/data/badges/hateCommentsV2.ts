@@ -2,7 +2,7 @@ import { Badge, StoryCard } from '../../types/game'
 
 export const hateCommentsV2: Badge = {
   id: 'hate-comments-v2',
-  title: 'Hate Comments',
+  name: 'Hate Comments',
   description: 'Learn to handle negative comments while protecting your mental health',
   icon: '💬',
   phases: [
