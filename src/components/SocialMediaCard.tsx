@@ -84,7 +84,7 @@ export function SocialMediaCard({
       </div>
 
       {/* Content */}
-      <div className="text-neutral-800 text-base lg:text-lg leading-relaxed">
+      <div className="text-black text-base lg:text-lg leading-relaxed">
         {type === 'post' && !isUserPost && (
           <span className="text-neutral-600 font-medium text-sm lg:text-base block mb-2">
             Comment:
@@ -101,7 +101,7 @@ export function SocialMediaCard({
           </span>
         )}
         
-        <div className="font-medium">
+        <div className="font-medium" style={{ color: '#000000 !important' }}>
           "{content}"
         </div>
       </div>

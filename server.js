@@ -27,8 +27,8 @@ app.post('/api/grok/chat', async (req, res) => {
         messages,
         model: 'grok-2-1212',
         stream: false,
-        temperature: 0.8,
-        max_tokens: 60,
+        temperature: 0.3,
+        max_tokens: 150,
         presence_penalty: 0.7,
         frequency_penalty: 0.5
       })

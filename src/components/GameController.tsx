@@ -191,71 +191,75 @@ export function GameController() {
     const input = gameState.freeformInput?.trim() || ''
     if (!input || isEvaluating) return
     
+    console.log('🎯 STARTING GROK EVALUATION:', input)
     setIsEvaluating(true)
     setEvaluationFeedback(null)
+    
+    // Add user response card first
+    const userResponseCard: StoryCard = {
+      id: `user-response-${Date.now()}`,
+      type: 'reply',
+      content: input,
+      author: 'You',
+      timestamp: 'just now',
+      isUserPost: true
+    }
+    
+    setGameState(prev => ({
+      ...prev,
+      visibleCards: [...prev.visibleCards, userResponseCard]
+    }))
     
     // Get the hateful comment from the practice phase
     const practiceComment = 'Nobody watches your boring content. Stop embarrassing yourself.'
     
     try {
+      console.log('🤖 CALLING GROK API...')
       const evaluation = await grokClient.evaluateResponse(input, practiceComment)
+      console.log('✅ GROK RESPONSE:', evaluation)
+      
       setEvaluationFeedback(evaluation)
       
-      // Add user response card first
-      const userResponseCard: StoryCard = {
-        id: `user-response-${Date.now()}`,
-        type: 'reply',
-        content: input,
-        author: 'You',
-        timestamp: 'just now',
-        isUserPost: true
+      // Add feedback card
+      const feedbackCard: StoryCard = {
+        id: `grok-feedback-${Date.now()}`,
+        type: 'feedback',
+        content: evaluation.isPositive 
+          ? `🎉 Excellent response! Score: ${evaluation.score}/10. ${evaluation.feedback}. Moving to completion...`
+          : `⚠️ Let's improve that response. Score: ${evaluation.score}/10. ${evaluation.feedback}. Please try again with a more respectful approach.`
       }
       
       setGameState(prev => ({
         ...prev,
-        visibleCards: [...prev.visibleCards, userResponseCard]
+        visibleCards: [...prev.visibleCards, feedbackCard],
+        freeformInput: '' // Clear input for retry
       }))
       
-      // Wait a moment before showing feedback
-      setTimeout(() => {
-        const feedbackCard: StoryCard = {
-          id: `grok-feedback-${Date.now()}`,
-          type: 'feedback',
-          content: evaluation.isPositive 
-            ? `🎉 Great response! Score: ${evaluation.score}/10. ${evaluation.feedback}`
-            : `⚠️ Let's try again. Score: ${evaluation.score}/10. ${evaluation.feedback}`
-        }
-        
-        setGameState(prev => ({
-          ...prev,
-          visibleCards: [...prev.visibleCards, feedbackCard],
-          freeformInput: '' // Always clear input for fresh start
-        }))
-        
-        // If response was positive, advance to completion
-        if (evaluation.isPositive) {
-          setTimeout(() => {
-            advanceToNextStep()
-          }, 2000)
-        }
-        
-        setIsEvaluating(false)
-      }, 1000)
+      // If response was positive, advance to completion
+      if (evaluation.isPositive) {
+        setTimeout(() => {
+          console.log('🎉 ADVANCING TO COMPLETION')
+          advanceToNextStep()
+        }, 3000)
+      }
       
-    } catch (error) {
-      console.error('Error evaluating response:', error)
       setIsEvaluating(false)
       
-      // Fallback feedback
+    } catch (error) {
+      console.error('❌ GROK EVALUATION FAILED:', error)
+      setIsEvaluating(false)
+      
+      // Fallback feedback with working logic
       const feedbackCard: StoryCard = {
         id: `fallback-feedback-${Date.now()}`,
         type: 'feedback',
-        content: "Unable to evaluate response. Please try a constructive, respectful reply that shows empathy and promotes positive engagement."
+        content: "AI evaluation unavailable. For this exercise, try responses like: 'Thanks to my supporters for the positive feedback!' or 'I'll focus on creating content for those who appreciate it.' Avoid angry responses."
       }
       
       setGameState(prev => ({
         ...prev,
-        visibleCards: [...prev.visibleCards, feedbackCard]
+        visibleCards: [...prev.visibleCards, feedbackCard],
+        freeformInput: ''
       }))
     }
   }
@@ -369,7 +373,8 @@ export function GameController() {
                       value={gameState.freeformInput || ''}
                       onChange={(e) => setGameState(prev => ({ ...prev, freeformInput: e.target.value }))}
                       placeholder="Type your response here..."
-                      className="w-full p-3 lg:p-4 border-2 border-neutral-300 rounded-lg text-base lg:text-lg font-medium resize-none h-24 lg:h-32 focus:border-brand-purple focus:outline-none text-gray-900 placeholder-gray-500"
+                      className="w-full p-3 lg:p-4 border-2 border-neutral-300 rounded-lg text-base lg:text-lg font-medium resize-none h-24 lg:h-32 focus:border-brand-purple focus:outline-none bg-white placeholder-gray-500"
+                      style={{ color: '#000000 !important' }}
                     />
                     
                     {/* Helpful hints after negative feedback */}

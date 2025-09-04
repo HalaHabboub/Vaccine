@@ -90,10 +90,12 @@ class GrokClient {
   }
 
   async evaluateResponse(userResponse: string, hatefulComment: string): Promise<{ isPositive: boolean; feedback: string; score: number }> {
+    console.log('🤖 Grok evaluating:', { userResponse, hatefulComment })
+    
     const messages: GrokMessage[] = [
       {
         role: 'system',
-        content: 'You are evaluating a user\'s response to hate comments for training purposes. Analyze if the response is respectful, constructive, and promotes positive engagement. Respond with JSON format: {"isPositive": boolean, "feedback": "specific feedback", "score": number from 1-10}. Score 7+ is passing.'
+        content: 'You are evaluating responses to hate comments. Be very lenient - only fail if the response is clearly rude, mean, or disrespectful. Most responses should pass (score 6+). Give gentle, encouraging feedback. Respond ONLY with JSON: {"isPositive": boolean, "feedback": "brief constructive feedback under 40 words", "score": number from 1-10}. Score 6+ passes.'
       },
       {
         role: 'user',
@@ -103,19 +105,82 @@ class GrokClient {
 
     try {
       const response = await this.sendMessage(messages)
-      const evaluation = JSON.parse(response)
+      console.log('🤖 Grok raw response:', response)
+      
+      // Clean response - remove markdown code blocks if present
+      let cleanResponse = response.trim()
+      if (cleanResponse.startsWith('```json')) {
+        cleanResponse = cleanResponse.replace(/```json\s*/, '').replace(/\s*```$/, '')
+      } else if (cleanResponse.startsWith('```')) {
+        cleanResponse = cleanResponse.replace(/```\s*/, '').replace(/\s*```$/, '')
+      }
+      
+      console.log('🤖 Cleaned response:', cleanResponse)
+      
+      // Try to fix incomplete JSON by finding the last complete part
+      if (!cleanResponse.endsWith('}')) {
+        const lastBrace = cleanResponse.lastIndexOf('}')
+        if (lastBrace > 0) {
+          cleanResponse = cleanResponse.substring(0, lastBrace + 1)
+          console.log('🔧 Fixed incomplete JSON:', cleanResponse)
+        }
+      }
+      
+      const evaluation = JSON.parse(cleanResponse)
+      console.log('🤖 Grok parsed evaluation:', evaluation)
+      
       return {
-        isPositive: evaluation.isPositive && evaluation.score >= 7,
+        isPositive: evaluation.isPositive && evaluation.score >= 6,
         feedback: evaluation.feedback,
         score: evaluation.score
       }
     } catch (error) {
-      console.error('Failed to evaluate response:', error)
-      // Fallback evaluation
-      return {
-        isPositive: false,
-        feedback: "Unable to evaluate response. Please try a constructive, respectful reply.",
-        score: 0
+      console.error('❌ Failed to evaluate response:', error)
+      
+      // Very lenient fallback evaluation - only fail clearly rude responses
+      const lowerResponse = userResponse.toLowerCase()
+      
+      // Only fail if clearly rude/mean/disrespectful
+      const isVeryRude = /\b(stupid|idiot|moron|loser|shut up|f\*ck|damn|hate you|kill yourself)\b/i.test(userResponse)
+      const isAllCaps = userResponse.length > 10 && userResponse === userResponse.toUpperCase()
+      
+      if (isVeryRude) {
+        return {
+          isPositive: false,
+          feedback: "Try to avoid harsh language. A calmer response might work better.",
+          score: 4
+        }
+      } else if (isAllCaps) {
+        return {
+          isPositive: false,
+          feedback: "Consider using normal capitalization. It comes across as less aggressive.",
+          score: 6
+        }
+      } else {
+        // Pass almost everything else with gentle suggestions
+        const hasThank = /\b(thank|appreciate|grateful)\b/i.test(userResponse)
+        const hasIgnore = /\b(ignore|not worth)\b/i.test(userResponse)
+        const hasBlock = /\b(block|report)\b/i.test(userResponse)
+        
+        if (hasThank || hasBlock) {
+          return {
+            isPositive: true,
+            feedback: "Great approach! You're handling this professionally.",
+            score: 9
+          }
+        } else if (hasIgnore) {
+          return {
+            isPositive: true,
+            feedback: "Good strategy. Sometimes ignoring is the best response.",
+            score: 8
+          }
+        } else {
+          return {
+            isPositive: true,
+            feedback: "Nice response! You could also try thanking supporters or using moderation tools.",
+            score: 7
+          }
+        }
       }
     }
   }
