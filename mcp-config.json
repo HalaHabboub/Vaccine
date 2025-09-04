@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "react-bits": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sse-client",
+        "https://react-bits-mcp.davidhzdev.workers.dev/sse"
+      ],
+      "env": {},
+      "description": "React Bits MCP Server - Browse and search React components"
+    }
+  },
+  "endpoints": {
+    "react-bits-sse": "https://react-bits-mcp.davidhzdev.workers.dev/sse",
+    "react-bits-jsonrpc": "https://react-bits-mcp.davidhzdev.workers.dev/mcp"
+  }
+}
