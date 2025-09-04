@@ -88,6 +88,37 @@ class GrokClient {
 
     return this.sendMessage(updatedHistory)
   }
+
+  async evaluateResponse(userResponse: string, hatefulComment: string): Promise<{ isPositive: boolean; feedback: string; score: number }> {
+    const messages: GrokMessage[] = [
+      {
+        role: 'system',
+        content: 'You are evaluating a user\'s response to hate comments for training purposes. Analyze if the response is respectful, constructive, and promotes positive engagement. Respond with JSON format: {"isPositive": boolean, "feedback": "specific feedback", "score": number from 1-10}. Score 7+ is passing.'
+      },
+      {
+        role: 'user',
+        content: `Original hate comment: "${hatefulComment}"\nUser's response: "${userResponse}"\n\nEvaluate this response for respectfulness and positive impact.`
+      }
+    ]
+
+    try {
+      const response = await this.sendMessage(messages)
+      const evaluation = JSON.parse(response)
+      return {
+        isPositive: evaluation.isPositive && evaluation.score >= 7,
+        feedback: evaluation.feedback,
+        score: evaluation.score
+      }
+    } catch (error) {
+      console.error('Failed to evaluate response:', error)
+      // Fallback evaluation
+      return {
+        isPositive: false,
+        feedback: "Unable to evaluate response. Please try a constructive, respectful reply.",
+        score: 0
+      }
+    }
+  }
 }
 
 export const grokClient = new GrokClient()

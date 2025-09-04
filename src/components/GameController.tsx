@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { hateCommentsCorrect } from '../data/badges/hateCommentsCorrect'
 import { SocialMediaCard } from './SocialMediaCard'
 import { BadgeCompletionPopup } from './BadgeCompletionPopup'
+import { grokClient } from '../utils/grokClient'
 import type { GameState, Badge, StoryCard } from '../types/game'
 
 export function GameController() {
@@ -23,6 +24,12 @@ export function GameController() {
   
   const [isAnimating, setIsAnimating] = useState(false)
   const [showChoices, setShowChoices] = useState(false)
+  const [isEvaluating, setIsEvaluating] = useState(false)
+  const [evaluationFeedback, setEvaluationFeedback] = useState<{
+    isPositive: boolean;
+    feedback: string;
+    score: number;
+  } | null>(null)
 
   const currentBadgeData: Badge = hateCommentsCorrect
   const currentPhaseData = currentBadgeData.phases[gameState.currentPhase]
@@ -180,40 +187,77 @@ export function GameController() {
     return false
   }
   
-  const handleFreeformSubmit = () => {
+  const handleFreeformSubmit = async () => {
     const input = gameState.freeformInput?.trim() || ''
-    if (!input) return
+    if (!input || isEvaluating) return
     
-    // Simple AI evaluation logic
-    const isAngry = /\b(stupid|idiot|shut up|go away|hate|dumb)\b/i.test(input)
-    const isIgnoring = /\b(ignore|nothing|silent|don't respond)\b/i.test(input)
-    const isHealthy = /\b(block|report|positive|thank|grateful|community|support)\b/i.test(input)
+    setIsEvaluating(true)
+    setEvaluationFeedback(null)
     
-    let feedback: string
-    if (isAngry) {
-      feedback = "That's understandable but risky. Anger fuels trolls. Try a different approach."
-    } else if (isIgnoring) {
-      feedback = "Ignoring leads to more stress over time. Consider healthier strategies."
-    } else if (isHealthy) {
-      feedback = "Excellent! You protect your mental health and build trust with your audience."
-      advanceToNextStep()
-      return
-    } else {
-      feedback = "Consider how this response might affect your stress and community trust. Try again."
+    // Get the hateful comment from the practice phase
+    const practiceComment = 'Nobody watches your boring content. Stop embarrassing yourself.'
+    
+    try {
+      const evaluation = await grokClient.evaluateResponse(input, practiceComment)
+      setEvaluationFeedback(evaluation)
+      
+      // Add user response card first
+      const userResponseCard: StoryCard = {
+        id: `user-response-${Date.now()}`,
+        type: 'reply',
+        content: input,
+        author: 'You',
+        timestamp: 'just now',
+        isUserPost: true
+      }
+      
+      setGameState(prev => ({
+        ...prev,
+        visibleCards: [...prev.visibleCards, userResponseCard]
+      }))
+      
+      // Wait a moment before showing feedback
+      setTimeout(() => {
+        const feedbackCard: StoryCard = {
+          id: `grok-feedback-${Date.now()}`,
+          type: 'feedback',
+          content: evaluation.isPositive 
+            ? `🎉 Great response! Score: ${evaluation.score}/10. ${evaluation.feedback}`
+            : `⚠️ Let's try again. Score: ${evaluation.score}/10. ${evaluation.feedback}`
+        }
+        
+        setGameState(prev => ({
+          ...prev,
+          visibleCards: [...prev.visibleCards, feedbackCard],
+          freeformInput: '' // Always clear input for fresh start
+        }))
+        
+        // If response was positive, advance to completion
+        if (evaluation.isPositive) {
+          setTimeout(() => {
+            advanceToNextStep()
+          }, 2000)
+        }
+        
+        setIsEvaluating(false)
+      }, 1000)
+      
+    } catch (error) {
+      console.error('Error evaluating response:', error)
+      setIsEvaluating(false)
+      
+      // Fallback feedback
+      const feedbackCard: StoryCard = {
+        id: `fallback-feedback-${Date.now()}`,
+        type: 'feedback',
+        content: "Unable to evaluate response. Please try a constructive, respectful reply that shows empathy and promotes positive engagement."
+      }
+      
+      setGameState(prev => ({
+        ...prev,
+        visibleCards: [...prev.visibleCards, feedbackCard]
+      }))
     }
-    
-    // Add feedback card
-    const feedbackCard: StoryCard = {
-      id: `freeform-feedback-${Date.now()}`,
-      type: 'feedback',
-      content: feedback
-    }
-    
-    setGameState(prev => ({
-      ...prev,
-      visibleCards: [...prev.visibleCards, feedbackCard],
-      freeformInput: ''
-    }))
   }
 
   return (
@@ -325,16 +369,49 @@ export function GameController() {
                       value={gameState.freeformInput || ''}
                       onChange={(e) => setGameState(prev => ({ ...prev, freeformInput: e.target.value }))}
                       placeholder="Type your response here..."
-                      className="w-full p-3 lg:p-4 border-2 border-neutral-300 rounded-lg text-base lg:text-lg font-medium resize-none h-24 lg:h-32 focus:border-brand-purple focus:outline-none"
+                      className="w-full p-3 lg:p-4 border-2 border-neutral-300 rounded-lg text-base lg:text-lg font-medium resize-none h-24 lg:h-32 focus:border-brand-purple focus:outline-none text-gray-900 placeholder-gray-500"
                     />
+                    
+                    {/* Helpful hints after negative feedback */}
+                    {evaluationFeedback && !evaluationFeedback.isPositive && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg"
+                      >
+                        <div className="flex">
+                          <div className="ml-3">
+                            <p className="text-sm text-blue-700">
+                              💡 <strong>Tips for a positive response:</strong>
+                            </p>
+                            <ul className="text-sm text-blue-600 mt-2 list-disc list-inside space-y-1">
+                              <li>Stay calm and professional</li>
+                              <li>Thank supporters and focus on positive community</li>
+                              <li>Consider using moderation tools (block/report)</li>
+                              <li>Avoid responding with anger or defensiveness</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
                     <motion.button
                       whileHover={{ scale: 1.02, y: -2 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => handleChoice('freeform-response')}
-                      disabled={!gameState.freeformInput?.trim() || isAnimating}
+                      disabled={!gameState.freeformInput?.trim() || isAnimating || isEvaluating}
                       className="w-full bg-gradient-to-r from-brand-purple to-brand-orange text-white font-bold text-lg lg:text-xl px-6 lg:px-8 py-4 lg:py-6 rounded-full hover:shadow-2xl transition-all duration-200 hover:from-brand-purple-light hover:to-brand-orange-light disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      Submit Response
+                      {isEvaluating ? (
+                        <span className="flex items-center justify-center">
+                          <svg className="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                          </svg>
+                          Evaluating Response...
+                        </span>
+                      ) : (
+                        'Submit Response'
+                      )}
                     </motion.button>
                   </div>
                 ) : (
