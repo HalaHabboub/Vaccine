@@ -109,7 +109,7 @@ export function HomePage({ onPractice, onGetHelp }: HomePageProps) {
 
       {/* Decorative elements */}
       <div className="absolute top-4 right-4 md:top-10 md:right-10 text-brand-white/20">
-        <svg width="40" height="40" md:width="60" md:height="60" viewBox="0 0 60 60" fill="currentColor" className="w-8 h-8 md:w-12 md:h-12">
+        <svg width="40" height="40" viewBox="0 0 60 60" fill="currentColor" className="w-8 h-8 md:w-12 md:h-12">
           <circle cx="10" cy="10" r="3" className="animate-pulse" />
           <circle cx="30" cy="10" r="3" className="animate-pulse animation-delay-200" />
           <circle cx="50" cy="10" r="3" className="animate-pulse animation-delay-400" />
