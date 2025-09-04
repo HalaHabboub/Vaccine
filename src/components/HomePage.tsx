@@ -7,9 +7,10 @@ import SubtlePixelBlast from './SubtlePixelBlast'
 interface HomePageProps {
   onPractice: () => void
   onGetHelp: () => void
+  onCommunity: () => void
 }
 
-export function HomePage({ onPractice, onGetHelp }: HomePageProps) {
+export function HomePage({ onPractice, onGetHelp, onCommunity }: HomePageProps) {
   const [hoveredButton, setHoveredButton] = useState<string | null>(null)
 
   return (
@@ -42,56 +43,87 @@ export function HomePage({ onPractice, onGetHelp }: HomePageProps) {
         </motion.div>
 
         {/* Buttons Container */}
-        <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 md:gap-12 px-4 w-full max-w-4xl">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 px-4 w-full max-w-6xl">
           {/* Practice Button */}
-          <FloatingCard delay={0.3} glowColor="orange" className="relative flex-1">
-            <ModernButton
-              onClick={onPractice}
-              variant="primary"
-              size="lg"
-              icon="🎮"
-              className="w-full h-full group min-h-[120px] sm:min-h-[140px]"
-            >
-              <div className="flex flex-col items-center justify-center h-full">
-                <span className="text-xl sm:text-2xl font-bold uppercase tracking-wider">Practice</span>
-                <span className="text-xs sm:text-sm opacity-90 mt-1">Train in Safe Scenarios</span>
-              </div>
-            </ModernButton>
-            {hoveredButton === 'practice' && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-brand-white/70 text-sm whitespace-nowrap bg-brand-white/10 backdrop-blur-sm px-4 py-2 rounded-lg"
+          <div className="flex-1">
+            <FloatingCard delay={0.3} glowColor="orange" className="relative h-full">
+              <ModernButton
+                onClick={onPractice}
+                variant="primary"
+                size="lg"
+                icon="🎮"
+                className="w-full h-full !px-4 !py-0 min-h-[140px] lg:min-h-[160px] flex items-center justify-center"
               >
-                Learn through interactive simulations
-              </motion.div>
-            )}
-          </FloatingCard>
+                <div className="flex flex-col items-center justify-center text-center">
+                  <span className="text-lg sm:text-xl lg:text-2xl font-bold uppercase tracking-wider whitespace-nowrap">Practice</span>
+                  <span className="text-xs sm:text-sm opacity-90 mt-1">Train in Safe Scenarios</span>
+                </div>
+              </ModernButton>
+              {hoveredButton === 'practice' && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-brand-white/70 text-sm whitespace-nowrap bg-brand-white/10 backdrop-blur-sm px-4 py-2 rounded-lg"
+                >
+                  Learn through interactive simulations
+                </motion.div>
+              )}
+            </FloatingCard>
+          </div>
 
           {/* Get Help Button */}
-          <FloatingCard delay={0.4} glowColor="purple" className="relative flex-1">
-            <ModernButton
-              onClick={onGetHelp}
-              variant="secondary"
-              size="lg"
-              icon="🆘"
-              className="w-full h-full group min-h-[120px] sm:min-h-[140px]"
-            >
-              <div className="flex flex-col items-center justify-center h-full">
-                <span className="text-xl sm:text-2xl font-bold uppercase tracking-wider">Get Help</span>
-                <span className="text-xs sm:text-sm opacity-90 mt-1">Real-Time Support</span>
-              </div>
-            </ModernButton>
-            {hoveredButton === 'help' && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-brand-white/70 text-sm whitespace-nowrap bg-brand-white/10 backdrop-blur-sm px-4 py-2 rounded-lg"
+          <div className="flex-1">
+            <FloatingCard delay={0.4} glowColor="purple" className="relative h-full">
+              <ModernButton
+                onClick={onGetHelp}
+                variant="secondary"
+                size="lg"
+                icon="🆘"
+                className="w-full h-full !px-4 !py-0 min-h-[140px] lg:min-h-[160px] flex items-center justify-center"
               >
-                Get advice for real situations now
-              </motion.div>
-            )}
-          </FloatingCard>
+                <div className="flex flex-col items-center justify-center text-center">
+                  <span className="text-lg sm:text-xl lg:text-2xl font-bold uppercase tracking-wider whitespace-nowrap">Get Help</span>
+                  <span className="text-xs sm:text-sm opacity-90 mt-1">Real-Time Support</span>
+                </div>
+              </ModernButton>
+              {hoveredButton === 'help' && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-brand-white/70 text-sm whitespace-nowrap bg-brand-white/10 backdrop-blur-sm px-4 py-2 rounded-lg"
+                >
+                  Get advice for real situations now
+                </motion.div>
+              )}
+            </FloatingCard>
+          </div>
+
+          {/* Community Button */}
+          <div className="flex-1">
+            <FloatingCard delay={0.5} glowColor="orange" className="relative h-full">
+              <ModernButton
+                onClick={onCommunity}
+                variant="primary"
+                size="lg"
+                icon="👥"
+                className="w-full h-full !px-4 !py-0 min-h-[140px] lg:min-h-[160px] flex items-center justify-center"
+              >
+                <div className="flex flex-col items-center justify-center text-center">
+                  <span className="text-lg sm:text-xl lg:text-2xl font-bold uppercase tracking-wider whitespace-nowrap">Community</span>
+                  <span className="text-xs sm:text-sm opacity-90 mt-1">Share Experiences</span>
+                </div>
+              </ModernButton>
+              {hoveredButton === 'community' && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-brand-white/70 text-sm whitespace-nowrap bg-brand-white/10 backdrop-blur-sm px-4 py-2 rounded-lg"
+                >
+                  Connect with others and find resources
+                </motion.div>
+              )}
+            </FloatingCard>
+          </div>
         </div>
 
         {/* Footer info */}

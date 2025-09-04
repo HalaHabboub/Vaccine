@@ -3,8 +3,9 @@ import { HomePage } from './components/HomePage'
 import { GameControllerSimple } from './components/GameControllerSimple'
 import { CrisisMode } from './components/CrisisMode'
 import { BadgesPage } from './components/BadgesPage'
+import { CommunityPage } from './components/CommunityPage'
 
-type Mode = 'home' | 'practice' | 'crisis' | 'badges'
+type Mode = 'home' | 'practice' | 'crisis' | 'badges' | 'community'
 
 function App() {
   const [mode, setMode] = useState<Mode>('home')
@@ -12,6 +13,7 @@ function App() {
 
   const handlePractice = () => setMode('practice')
   const handleGetHelp = () => setMode('crisis')
+  const handleCommunity = () => setMode('community')
   const handleBackHome = () => setMode('home')
   const handleBadgeComplete = () => {
     setCompletedBadges(prev => [...prev, 'hate-comments-simple'])
@@ -24,6 +26,7 @@ function App() {
         <HomePage 
           onPractice={handlePractice}
           onGetHelp={handleGetHelp}
+          onCommunity={handleCommunity}
         />
       )}
       
@@ -44,6 +47,10 @@ function App() {
           onBackToHome={handleBackHome}
           completedBadges={completedBadges}
         />
+      )}
+      
+      {mode === 'community' && (
+        <CommunityPage onBack={handleBackHome} />
       )}
       
       {mode === 'crisis' && (
