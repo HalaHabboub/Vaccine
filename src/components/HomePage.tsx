@@ -42,17 +42,17 @@ export function HomePage({ onPractice, onGetHelp }: HomePageProps) {
         </motion.div>
 
         {/* Buttons Container */}
-        <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 md:gap-12 px-4 w-full max-w-2xl">
+        <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 md:gap-12 px-4 w-full max-w-4xl">
           {/* Practice Button */}
-          <FloatingCard delay={0.3} glowColor="orange" className="relative">
+          <FloatingCard delay={0.3} glowColor="orange" className="relative flex-1">
             <ModernButton
               onClick={onPractice}
               variant="primary"
               size="lg"
               icon="🎮"
-              className="w-full group"
+              className="w-full h-full group min-h-[120px] sm:min-h-[140px]"
             >
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center justify-center h-full">
                 <span className="text-xl sm:text-2xl font-bold uppercase tracking-wider">Practice</span>
                 <span className="text-xs sm:text-sm opacity-90 mt-1">Train in Safe Scenarios</span>
               </div>
@@ -69,15 +69,15 @@ export function HomePage({ onPractice, onGetHelp }: HomePageProps) {
           </FloatingCard>
 
           {/* Get Help Button */}
-          <FloatingCard delay={0.4} glowColor="purple" className="relative">
+          <FloatingCard delay={0.4} glowColor="purple" className="relative flex-1">
             <ModernButton
               onClick={onGetHelp}
               variant="secondary"
               size="lg"
               icon="🆘"
-              className="w-full group"
+              className="w-full h-full group min-h-[120px] sm:min-h-[140px]"
             >
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center justify-center h-full">
                 <span className="text-xl sm:text-2xl font-bold uppercase tracking-wider">Get Help</span>
                 <span className="text-xs sm:text-sm opacity-90 mt-1">Real-Time Support</span>
               </div>
