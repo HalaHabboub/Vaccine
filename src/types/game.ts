@@ -6,6 +6,7 @@ export interface Choice {
     communityTrust?: number
   }
   feedback?: string
+  isFreeform?: boolean // For text input choices
 }
 
 export interface StoryCard {
@@ -55,6 +56,8 @@ export interface GameState {
     choiceId: string
   }>
   visibleCards: StoryCard[] // Cards currently visible to user
+  triedChoices: string[] // Track which choices have been tried
+  freeformInput?: string // Store freeform text input
 }
 
 export interface Meters {
