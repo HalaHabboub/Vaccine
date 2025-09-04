@@ -269,26 +269,26 @@ export function CrisisMode() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2 }}
-          className="bg-white/10 backdrop-blur-md rounded-2xl p-8 mb-8"
+          className="bg-white/95 backdrop-blur-sm rounded-2xl p-8 mb-8 shadow-xl"
         >
           {/* Original Post Context */}
-          <label className="block text-white mb-6">
-            <span className="text-lg font-semibold mb-2 block">
-              📝 What did you originally post? (Optional)
+          <label className="block text-gray-800 mb-6">
+            <span className="text-xl font-semibold mb-2 block flex items-center gap-2">
+              <span className="text-primary-orange text-2xl">📝</span> What did you originally post? (Optional)
             </span>
             <textarea
               value={originalPost}
               onChange={(e) => setOriginalPost(e.target.value)}
               placeholder="Share your original post content for better context..."
-              className="w-full p-4 rounded-lg bg-black/30 text-white placeholder-white/40 border border-white/20 focus:border-primary-orange focus:outline-none resize-none"
+              className="w-full p-4 rounded-xl bg-white text-gray-800 placeholder-gray-500 border-2 border-gray-200 focus:border-primary-orange focus:outline-none resize-none text-lg shadow-md"
               rows={3}
             />
           </label>
 
           {/* Image Upload */}
           <div className="mb-6">
-            <span className="text-lg font-semibold mb-2 block text-white">
-              📸 Upload Screenshots (Optional)
+            <span className="text-xl font-semibold mb-2 block text-gray-800 flex items-center gap-2">
+              <span className="text-primary-orange text-2xl">📸</span> Upload Screenshots (Optional)
             </span>
             <input
               type="file"
@@ -300,9 +300,9 @@ export function CrisisMode() {
             />
             <label
               htmlFor="image-upload"
-              className="cursor-pointer inline-flex items-center px-4 py-3 bg-black/30 text-white rounded-lg border border-white/20 hover:border-primary-orange transition-colors"
+              className="cursor-pointer inline-flex items-center px-5 py-3 bg-white/90 text-gray-800 rounded-xl border-2 border-primary-orange/30 hover:border-primary-orange transition-all shadow-md font-medium"
             >
-              <span>📷 Add Images</span>
+              <span className="text-lg">📷 Add Images</span>
             </label>
             
             {/* Display uploaded images */}
@@ -328,15 +328,15 @@ export function CrisisMode() {
           </div>
 
           {/* Hateful Comment */}
-          <label className="block text-white mb-4">
-            <span className="text-lg font-semibold mb-2 block">
-              💬 The hateful comment you received:
+          <label className="block text-gray-800 mb-4">
+            <span className="text-xl font-semibold mb-2 block flex items-center gap-2">
+              <span className="text-primary-orange text-2xl">💬</span> The hateful comment you received:
             </span>
             <textarea
               value={hatefulComment}
               onChange={(e) => setHatefulComment(e.target.value)}
               placeholder="Example: 'You're a fraud, stop scamming everyone!'"
-              className="w-full p-4 rounded-lg bg-black/30 text-white placeholder-white/40 border border-white/20 focus:border-primary-orange focus:outline-none resize-none"
+              className="w-full p-4 rounded-xl bg-white text-gray-800 placeholder-gray-500 border-2 border-gray-200 focus:border-primary-orange focus:outline-none resize-none text-lg shadow-md"
               rows={4}
             />
           </label>
@@ -346,7 +346,7 @@ export function CrisisMode() {
             whileTap={{ scale: 0.98 }}
             onClick={startConversation}
             disabled={!hatefulComment.trim() || isAnalyzing}
-            className="w-full bg-gradient-to-r from-primary-orange to-primary-purple text-white font-bold py-4 px-8 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+            className="w-full bg-gradient-to-r from-orange-500 via-orange-600 to-purple-600 text-white font-bold py-5 px-8 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-xl hover:shadow-2xl text-lg border-2 border-white/20"
           >
             {isAnalyzing ? (
               <span className="flex items-center justify-center">
@@ -369,18 +369,18 @@ export function CrisisMode() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="bg-white/10 backdrop-blur-md rounded-2xl p-8 mb-8"
+              className="bg-white/95 backdrop-blur-sm rounded-2xl p-8 mb-8 shadow-xl"
             >
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-white">
-                  🤝 Crisis Conversation
+                <h2 className="text-3xl font-bold text-gray-800 flex items-center gap-2">
+                  <span className="text-primary-orange">🤝</span> Crisis Conversation
                 </h2>
                 <div className="flex gap-3">
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={showStrategies}
-                    className="bg-primary-orange/80 hover:bg-primary-orange text-white px-4 py-2 rounded-lg text-sm font-medium"
+                    className="bg-white/90 hover:bg-white text-gray-800 border-2 border-primary-orange/30 hover:border-primary-orange px-5 py-2.5 rounded-xl font-medium shadow-md"
                   >
                     See Strategies
                   </motion.button>
@@ -388,7 +388,7 @@ export function CrisisMode() {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={resetConversation}
-                    className="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg text-sm font-medium"
+                    className="bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-300 px-5 py-2.5 rounded-xl font-medium shadow-md"
                   >
                     Start Over
                   </motion.button>
@@ -396,7 +396,7 @@ export function CrisisMode() {
               </div>
 
               {/* Messages */}
-              <div className="bg-black/20 rounded-xl p-4 mb-4 h-80 overflow-y-auto">
+              <div className="bg-gray-50 border border-primary-orange/20 rounded-xl p-6 mb-4 h-96 overflow-y-auto">
                 {conversationMessages.map((message) => (
                   <motion.div
                     key={message.id}
@@ -405,14 +405,14 @@ export function CrisisMode() {
                     className={`mb-4 flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
                     <div
-                      className={`max-w-[80%] p-3 rounded-lg ${
+                      className={`max-w-[80%] p-4 rounded-xl shadow-lg border-2 ${
                         message.role === 'user'
-                          ? 'bg-primary-purple text-white'
-                          : 'bg-white/10 text-white border border-white/20'
+                          ? 'bg-gradient-to-br from-purple-700 via-purple-800 to-purple-900 border-purple-500/50'
+                          : 'bg-white/95 border border-primary-orange/10'
                       }`}
                     >
-                      <p className="text-base leading-relaxed">{message.content}</p>
-                      <p className="text-sm mt-1 opacity-60">
+                      <p className={`text-lg leading-relaxed font-medium ${message.role === 'user' ? 'text-white' : 'text-gray-800'}`}>{message.content}</p>
+                      <p className={`text-sm mt-2 ${message.role === 'user' ? 'text-purple-200' : 'text-gray-600'}`}>
                         {message.timestamp.toLocaleTimeString()}
                       </p>
                     </div>
@@ -426,17 +426,17 @@ export function CrisisMode() {
                     animate={{ opacity: 1 }}
                     className="flex justify-start"
                   >
-                    <div className="bg-white/10 border border-white/20 p-3 rounded-lg max-w-[80%]">
+                    <div className="bg-white border-2 border-primary-orange/20 p-4 rounded-xl shadow-lg max-w-[80%]">
                       {currentTypingMessage ? (
                         <>
-                          <p className="text-base leading-relaxed text-white">{currentTypingMessage}</p>
-                          <div className="inline-block w-2 h-5 bg-white/60 ml-1 animate-pulse"></div>
+                          <p className="text-lg leading-relaxed text-gray-800 font-medium">{currentTypingMessage}</p>
+                          <div className="inline-block w-2 h-5 bg-primary-orange ml-1 animate-pulse"></div>
                         </>
                       ) : (
                         <div className="flex space-x-1">
-                          <div className="w-2 h-2 bg-white/60 rounded-full animate-bounce"></div>
-                          <div className="w-2 h-2 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                          <div className="w-2 h-2 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                          <div className="w-3 h-3 bg-primary-orange rounded-full animate-bounce"></div>
+                          <div className="w-3 h-3 bg-primary-orange rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                          <div className="w-3 h-3 bg-primary-orange rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                         </div>
                       )}
                     </div>
@@ -453,7 +453,7 @@ export function CrisisMode() {
                   onChange={(e) => setUserInput(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
                   placeholder="Share how you're feeling..."
-                  className="flex-1 p-3 rounded-lg bg-black/30 text-white placeholder-white/40 border border-white/20 focus:border-primary-orange focus:outline-none text-base"
+                  className="flex-1 p-4 rounded-xl bg-white text-gray-800 placeholder-gray-500 border-2 border-gray-200 focus:border-primary-orange focus:outline-none text-lg shadow-md"
                   disabled={isTyping}
                 />
                 <motion.button
@@ -461,7 +461,7 @@ export function CrisisMode() {
                   whileTap={{ scale: 0.95 }}
                   onClick={sendMessage}
                   disabled={!userInput.trim() || isTyping}
-                  className="bg-gradient-to-r from-primary-orange to-primary-purple text-white font-bold px-6 py-3 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="bg-gradient-to-r from-primary-orange to-primary-orange/80 hover:from-primary-orange/90 hover:to-primary-orange/70 text-white font-bold px-8 py-4 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed shadow-lg text-lg"
                 >
                   Send
                 </motion.button>
