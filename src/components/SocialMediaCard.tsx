@@ -59,24 +59,24 @@ export function SocialMediaCard({
 
   return (
     <div
-      className={`${getCardStyling()} border-2 rounded-2xl p-6 shadow-lg max-w-2xl ${className}`}
+      className={`${getCardStyling()} border-2 rounded-2xl p-4 lg:p-6 shadow-lg max-w-2xl ${className}`}
     >
       {/* Header */}
-      <div className="flex items-center gap-3 mb-4">
-        <span className="text-2xl">{getIcon()}</span>
+      <div className="flex items-center gap-2 lg:gap-3 mb-3 lg:mb-4">
+        <span className="text-xl lg:text-2xl">{getIcon()}</span>
         <div className="flex-1">
           {author && (
-            <span className={`${getAuthorStyling()} text-lg`}>
+            <span className={`${getAuthorStyling()} text-base lg:text-lg`}>
               {author}
             </span>
           )}
           {timestamp && (
-            <span className="text-neutral-500 text-sm ml-2">
+            <span className="text-neutral-500 text-xs lg:text-sm ml-2">
               {timestamp}
             </span>
           )}
           {type === 'feedback' && !author && (
-            <span className="text-brand-purple font-bold text-lg">
+            <span className="text-brand-purple font-bold text-base lg:text-lg">
               System Feedback
             </span>
           )}
@@ -84,19 +84,19 @@ export function SocialMediaCard({
       </div>
 
       {/* Content */}
-      <div className="text-neutral-800 text-lg leading-relaxed">
+      <div className="text-neutral-800 text-base lg:text-lg leading-relaxed">
         {type === 'post' && !isUserPost && (
-          <span className="text-neutral-600 font-medium text-base block mb-2">
+          <span className="text-neutral-600 font-medium text-sm lg:text-base block mb-2">
             Comment:
           </span>
         )}
         {type === 'post' && isUserPost && (
-          <span className="text-brand-purple font-medium text-base block mb-2">
+          <span className="text-brand-purple font-medium text-sm lg:text-base block mb-2">
             You posted:
           </span>
         )}
         {type === 'reply' && isUserPost && (
-          <span className="text-brand-orange font-medium text-base block mb-2">
+          <span className="text-brand-orange font-medium text-sm lg:text-base block mb-2">
             Your reply:
           </span>
         )}
@@ -108,18 +108,18 @@ export function SocialMediaCard({
 
       {/* Engagement indicators for realism */}
       {(type === 'post' || type === 'comment') && (
-        <div className="flex items-center gap-6 mt-4 pt-4 border-t border-current/10">
-          <button className="flex items-center gap-2 text-neutral-500 hover:text-brand-purple transition-colors">
-            <span>❤️</span>
-            <span className="text-sm">{Math.floor(Math.random() * 50) + 1}</span>
+        <div className="flex items-center gap-4 lg:gap-6 mt-3 lg:mt-4 pt-3 lg:pt-4 border-t border-current/10">
+          <button className="flex items-center gap-1 lg:gap-2 text-neutral-500 hover:text-brand-purple transition-colors">
+            <span className="text-sm lg:text-base">❤️</span>
+            <span className="text-xs lg:text-sm">{Math.floor(Math.random() * 50) + 1}</span>
           </button>
-          <button className="flex items-center gap-2 text-neutral-500 hover:text-brand-orange transition-colors">
-            <span>💬</span>
-            <span className="text-sm">{Math.floor(Math.random() * 20) + 1}</span>
+          <button className="flex items-center gap-1 lg:gap-2 text-neutral-500 hover:text-brand-orange transition-colors">
+            <span className="text-sm lg:text-base">💬</span>
+            <span className="text-xs lg:text-sm">{Math.floor(Math.random() * 20) + 1}</span>
           </button>
-          <button className="flex items-center gap-2 text-neutral-500 hover:text-green-500 transition-colors">
-            <span>🔄</span>
-            <span className="text-sm">{Math.floor(Math.random() * 10) + 1}</span>
+          <button className="flex items-center gap-1 lg:gap-2 text-neutral-500 hover:text-green-500 transition-colors">
+            <span className="text-sm lg:text-base">🔄</span>
+            <span className="text-xs lg:text-sm">{Math.floor(Math.random() * 10) + 1}</span>
           </button>
         </div>
       )}

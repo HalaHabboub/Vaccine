@@ -217,14 +217,14 @@ export function GameController() {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-100 flex">
-      {/* Left Sidebar */}
-      <div className="w-80 bg-neutral-900 shadow-2xl flex flex-col justify-center px-8 py-12 space-y-16">
+    <div className="min-h-screen bg-neutral-100 flex flex-col lg:flex-row">
+      {/* Left Sidebar - Mobile: Top bar, Desktop: Left sidebar */}
+      <div className="w-full lg:w-80 bg-neutral-900 shadow-2xl flex flex-row lg:flex-col justify-around lg:justify-center px-4 py-4 lg:px-8 lg:py-12 space-x-8 lg:space-x-0 lg:space-y-16">
         {/* Followers Metric */}
         <div className="text-center">
           <div className="text-neutral-400 text-sm font-medium uppercase tracking-wider mb-2">FOLLOWERS</div>
           <motion.div 
-            className="text-white text-5xl font-black"
+            className="text-white text-3xl lg:text-5xl font-black"
             key={followersCount}
             animate={{ scale: [1, 1.1, 1] }}
             transition={{ duration: 0.3 }}
@@ -234,37 +234,37 @@ export function GameController() {
         </div>
 
         {/* Stress Level Meter */}
-        <div>
-          <div className="flex items-center justify-center mb-6">
-            <span className="text-4xl mr-3">🧠</span>
+        <div className="flex-1 lg:flex-initial">
+          <div className="flex items-center justify-center mb-2 lg:mb-6">
+            <span className="text-2xl lg:text-4xl mr-2 lg:mr-3">🧠</span>
             <div className="text-center">
-              <div className="text-neutral-400 text-sm font-medium uppercase tracking-wider">STRESS</div>
+              <div className="text-neutral-400 text-xs lg:text-sm font-medium uppercase tracking-wider">STRESS</div>
             </div>
           </div>
           
           <div className="relative">
-            <div className="w-full bg-neutral-800 rounded-full h-6 overflow-hidden border border-neutral-700">
+            <div className="w-full bg-neutral-800 rounded-full h-4 lg:h-6 overflow-hidden border border-neutral-700">
               <motion.div
                 className={`h-full bg-gradient-to-r ${getStressColor(stressLevel)} shadow-lg`}
                 animate={{ width: `${stressLevel}%` }}
                 transition={{ duration: 0.8, ease: 'easeOut' }}
               />
             </div>
-            <div className="text-center mt-3">
-              <span className="text-white text-lg font-semibold">{stressLevel}%</span>
+            <div className="text-center mt-2 lg:mt-3">
+              <span className="text-white text-sm lg:text-lg font-semibold">{stressLevel}%</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Main Game Panel */}
-      <div className="flex-1 px-16 py-12">
+      <div className="flex-1 px-4 py-4 lg:px-16 lg:py-12">
         <div className="max-w-4xl mx-auto">
           {/* Badge Progress Indicator */}
-          <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
-            <div className="flex items-center justify-between mb-4">
-              <span className="font-bold text-neutral-800 text-lg">{currentBadgeData.name}</span>
-              <span className="text-neutral-500 font-medium">
+          <div className="bg-white rounded-xl shadow-lg p-4 lg:p-6 mb-4 lg:mb-8">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-2">
+              <span className="font-bold text-neutral-800 text-base lg:text-lg">{currentBadgeData.name}</span>
+              <span className="text-neutral-500 font-medium text-sm lg:text-base">
                 Phase {gameState.currentPhase + 1} of {currentBadgeData.phases.length}
               </span>
             </div>
@@ -278,15 +278,15 @@ export function GameController() {
           </div>
 
           {/* Phase Title */}
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-neutral-800 mb-2">{currentPhaseData.narrative}</h2>
-            <p className="text-neutral-600 text-lg">
+          <div className="text-center mb-4 lg:mb-8">
+            <h2 className="text-xl lg:text-3xl font-bold text-neutral-800 mb-2 px-2">{currentPhaseData.narrative}</h2>
+            <p className="text-neutral-600 text-base lg:text-lg">
               Step {gameState.currentStep + 1} of {currentPhaseData.steps?.length || 1}
             </p>
           </div>
 
           {/* Social Media Cards Container */}
-          <div className="space-y-6 mb-12">
+          <div className="space-y-4 lg:space-y-6 mb-8 lg:mb-12">
             <AnimatePresence>
               {gameState.visibleCards.map((card, index) => (
                 <motion.div
@@ -316,29 +316,29 @@ export function GameController() {
                 transition={{ duration: 0.4 }}
                 className="flex flex-col items-center space-y-6"
               >
-                <h3 className="text-2xl font-bold text-neutral-800 mb-4">How do you respond?</h3>
+                <h3 className="text-lg lg:text-2xl font-bold text-neutral-800 mb-4 px-4">How do you respond?</h3>
                 
                 {/* Check if this is freeform input */}
                 {currentPhaseData.choices.some(c => c.isFreeform) ? (
-                  <div className="w-full max-w-2xl space-y-4">
+                  <div className="w-full max-w-2xl space-y-4 px-4">
                     <textarea
                       value={gameState.freeformInput || ''}
                       onChange={(e) => setGameState(prev => ({ ...prev, freeformInput: e.target.value }))}
                       placeholder="Type your response here..."
-                      className="w-full p-4 border-2 border-neutral-300 rounded-lg text-lg font-medium resize-none h-32 focus:border-brand-purple focus:outline-none"
+                      className="w-full p-3 lg:p-4 border-2 border-neutral-300 rounded-lg text-base lg:text-lg font-medium resize-none h-24 lg:h-32 focus:border-brand-purple focus:outline-none"
                     />
                     <motion.button
                       whileHover={{ scale: 1.02, y: -2 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => handleChoice('freeform-response')}
                       disabled={!gameState.freeformInput?.trim() || isAnimating}
-                      className="w-full bg-gradient-to-r from-brand-purple to-brand-orange text-white font-bold text-xl px-8 py-6 rounded-full hover:shadow-2xl transition-all duration-200 hover:from-brand-purple-light hover:to-brand-orange-light disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full bg-gradient-to-r from-brand-purple to-brand-orange text-white font-bold text-lg lg:text-xl px-6 lg:px-8 py-4 lg:py-6 rounded-full hover:shadow-2xl transition-all duration-200 hover:from-brand-purple-light hover:to-brand-orange-light disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       Submit Response
                     </motion.button>
                   </div>
                 ) : (
-                  <div className="space-y-4 w-full max-w-2xl">
+                  <div className="space-y-4 w-full max-w-2xl px-4">
                     {currentPhaseData.choices.map((choice, index) => {
                       // For bad-strategies-comment2, only show the opposite choice from comment1
                       if (currentPhaseData.id === 'bad-strategies-comment2') {
@@ -364,7 +364,7 @@ export function GameController() {
                           whileTap={{ scale: isDisabled ? 1 : 0.98 }}
                           onClick={() => handleChoice(choice.id)}
                           disabled={isAnimating || isDisabled}
-                          className={`w-full font-bold text-xl px-8 py-6 rounded-full transition-all duration-200 ${
+                          className={`w-full font-bold text-lg lg:text-xl px-6 lg:px-8 py-4 lg:py-6 rounded-full transition-all duration-200 ${
                             isDisabled 
                               ? 'bg-neutral-300 text-neutral-500 cursor-not-allowed'
                               : 'bg-gradient-to-r from-brand-purple to-brand-orange text-white hover:shadow-2xl hover:from-brand-purple-light hover:to-brand-orange-light'
@@ -379,7 +379,7 @@ export function GameController() {
                       <motion.p
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="text-center text-neutral-600 text-lg mt-4"
+                        className="text-center text-neutral-600 text-base lg:text-lg mt-4"
                       >
                         Try the other response to see how it compares
                       </motion.p>
@@ -388,7 +388,7 @@ export function GameController() {
                       <motion.p
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="text-center text-neutral-600 text-lg mt-4"
+                        className="text-center text-neutral-600 text-base lg:text-lg mt-4"
                       >
                         Now try the other response to complete your learning
                       </motion.p>
@@ -409,7 +409,7 @@ export function GameController() {
                   whileTap={{ scale: 0.98 }}
                   onClick={advanceToNextStep}
                   disabled={isAnimating}
-                  className="bg-gradient-to-r from-brand-purple to-brand-orange text-white font-bold text-xl px-12 py-4 rounded-full hover:shadow-2xl transition-all duration-200 hover:from-brand-purple-light hover:to-brand-orange-light disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="bg-gradient-to-r from-brand-purple to-brand-orange text-white font-bold text-lg lg:text-xl px-8 lg:px-12 py-3 lg:py-4 rounded-full hover:shadow-2xl transition-all duration-200 hover:from-brand-purple-light hover:to-brand-orange-light disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Next
                 </motion.button>

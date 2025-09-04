@@ -300,42 +300,42 @@ export function GameControllerSimple({ onBadgeComplete }: GameControllerSimplePr
   const currentPhaseInfo = getCurrentPhase()
 
   return (
-    <div className="min-h-screen bg-neutral-100 flex">
-      {/* Left Sidebar */}
-      <div className="w-80 bg-neutral-900 shadow-2xl flex flex-col justify-center px-8 py-12 space-y-16">
+    <div className="min-h-screen bg-neutral-100 flex flex-col lg:flex-row">
+      {/* Left Sidebar - Mobile: Top bar, Desktop: Left sidebar */}
+      <div className="w-full lg:w-80 bg-neutral-900 shadow-2xl flex flex-row lg:flex-col justify-around lg:justify-center px-4 py-4 lg:px-8 lg:py-12 space-x-8 lg:space-x-0 lg:space-y-16">
         {/* Followers Metric */}
         <div className="text-center">
           <div className="text-neutral-400 text-sm font-medium uppercase tracking-wider mb-2">FOLLOWERS</div>
-          <div className="text-white text-5xl font-black">
+          <div className="text-white text-3xl lg:text-5xl font-black">
             {getFollowersDisplay(followersCount)}
           </div>
         </div>
 
         {/* Stress Level Meter */}
-        <div>
-          <div className="flex items-center justify-center mb-6">
-            <span className="text-4xl mr-3">🧠</span>
+        <div className="flex-1 lg:flex-initial">
+          <div className="flex items-center justify-center mb-2 lg:mb-6">
+            <span className="text-2xl lg:text-4xl mr-2 lg:mr-3">🧠</span>
             <div className="text-center">
-              <div className="text-neutral-400 text-sm font-medium uppercase tracking-wider">STRESS</div>
+              <div className="text-neutral-400 text-xs lg:text-sm font-medium uppercase tracking-wider">STRESS</div>
             </div>
           </div>
           
           <div className="relative">
-            <div className="w-full bg-neutral-800 rounded-full h-6 overflow-hidden border border-neutral-700">
+            <div className="w-full bg-neutral-800 rounded-full h-4 lg:h-6 overflow-hidden border border-neutral-700">
               <div
                 className={`h-full bg-gradient-to-r ${getStressColor(stressLevel)} shadow-lg transition-all duration-500`}
                 style={{ width: `${stressLevel}%` }}
               />
             </div>
-            <div className="text-center mt-3">
-              <span className="text-white text-lg font-semibold">{stressLevel}%</span>
+            <div className="text-center mt-2 lg:mt-3">
+              <span className="text-white text-sm lg:text-lg font-semibold">{stressLevel}%</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Main Game Panel */}
-      <div className="flex-1 px-16 py-12">
+      <div className="flex-1 px-4 py-4 lg:px-16 lg:py-12">
         <div className="max-w-4xl mx-auto">
           {/* Phase Status Bar */}
           <div className="bg-white rounded-xl shadow-lg p-6 mb-8">

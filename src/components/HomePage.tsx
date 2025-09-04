@@ -19,9 +19,9 @@ export function HomePage({ onPractice, onGetHelp }: HomePageProps) {
       
       {/* Animated background elements */}
       <div className="absolute inset-0 z-10">
-        <div className="absolute top-20 left-20 w-96 h-96 bg-brand-orange/20 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-20 right-20 w-96 h-96 bg-brand-purple-light/20 rounded-full blur-3xl animate-float animation-delay-2000" />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-radial from-brand-orange/10 to-transparent rounded-full animate-pulse" />
+        <div className="absolute top-10 left-4 md:top-20 md:left-20 w-32 h-32 md:w-96 md:h-96 bg-brand-orange/20 rounded-full blur-3xl animate-float" />
+        <div className="absolute bottom-10 right-4 md:bottom-20 md:right-20 w-32 h-32 md:w-96 md:h-96 bg-brand-purple-light/20 rounded-full blur-3xl animate-float animation-delay-2000" />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] md:w-[800px] md:h-[800px] bg-gradient-radial from-brand-orange/10 to-transparent rounded-full animate-pulse" />
       </div>
 
       {/* Main content */}
@@ -33,16 +33,16 @@ export function HomePage({ onPractice, onGetHelp }: HomePageProps) {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="mb-16 text-center"
         >
-          <h1 className="text-7xl md:text-9xl font-black text-brand-white mb-4 tracking-tight drop-shadow-2xl">
+          <h1 className="text-5xl sm:text-7xl md:text-9xl font-black text-brand-white mb-4 tracking-tight drop-shadow-2xl">
             VACCINE
           </h1>
-          <p className="text-xl md:text-2xl text-brand-white/80 font-light tracking-wide drop-shadow-lg">
+          <p className="text-lg sm:text-xl md:text-2xl text-brand-white/80 font-light tracking-wide drop-shadow-lg px-4">
             Immunize Against Online Hate
           </p>
         </motion.div>
 
         {/* Buttons Container */}
-        <div className="flex flex-col md:flex-row gap-8 md:gap-12">
+        <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 md:gap-12 px-4 w-full max-w-2xl">
           {/* Practice Button */}
           <FloatingCard delay={0.3} glowColor="orange" className="relative">
             <ModernButton
@@ -53,8 +53,8 @@ export function HomePage({ onPractice, onGetHelp }: HomePageProps) {
               className="w-full group"
             >
               <div className="flex flex-col items-center">
-                <span className="text-2xl font-bold uppercase tracking-wider">Practice</span>
-                <span className="text-sm opacity-90 mt-1">Train in Safe Scenarios</span>
+                <span className="text-xl sm:text-2xl font-bold uppercase tracking-wider">Practice</span>
+                <span className="text-xs sm:text-sm opacity-90 mt-1">Train in Safe Scenarios</span>
               </div>
             </ModernButton>
             {hoveredButton === 'practice' && (
@@ -78,8 +78,8 @@ export function HomePage({ onPractice, onGetHelp }: HomePageProps) {
               className="w-full group"
             >
               <div className="flex flex-col items-center">
-                <span className="text-2xl font-bold uppercase tracking-wider">Get Help</span>
-                <span className="text-sm opacity-90 mt-1">Real-Time Support</span>
+                <span className="text-xl sm:text-2xl font-bold uppercase tracking-wider">Get Help</span>
+                <span className="text-xs sm:text-sm opacity-90 mt-1">Real-Time Support</span>
               </div>
             </ModernButton>
             {hoveredButton === 'help' && (
@@ -108,8 +108,8 @@ export function HomePage({ onPractice, onGetHelp }: HomePageProps) {
       </div>
 
       {/* Decorative elements */}
-      <div className="absolute top-10 right-10 text-brand-white/20">
-        <svg width="60" height="60" viewBox="0 0 60 60" fill="currentColor">
+      <div className="absolute top-4 right-4 md:top-10 md:right-10 text-brand-white/20">
+        <svg width="40" height="40" md:width="60" md:height="60" viewBox="0 0 60 60" fill="currentColor" className="w-8 h-8 md:w-12 md:h-12">
           <circle cx="10" cy="10" r="3" className="animate-pulse" />
           <circle cx="30" cy="10" r="3" className="animate-pulse animation-delay-200" />
           <circle cx="50" cy="10" r="3" className="animate-pulse animation-delay-400" />
@@ -123,9 +123,9 @@ export function HomePage({ onPractice, onGetHelp }: HomePageProps) {
       </div>
       
       {/* Additional floating elements */}
-      <div className="absolute bottom-10 left-10">
+      <div className="absolute bottom-4 left-4 md:bottom-10 md:left-10">
         <motion.div 
-          className="w-16 h-16 bg-gradient-to-br from-brand-orange/20 to-brand-purple/20 rounded-2xl backdrop-blur-sm border border-brand-white/10"
+          className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-brand-orange/20 to-brand-purple/20 rounded-2xl backdrop-blur-sm border border-brand-white/10"
           animate={{ 
             rotate: [0, 360],
             scale: [1, 1.1, 1]

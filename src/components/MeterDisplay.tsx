@@ -25,18 +25,18 @@ export function MeterDisplay({ meters }: MeterDisplayProps) {
   }
 
   return (
-    <div className="bg-black/20 backdrop-blur-md border-b border-white/10 p-6">
-      <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
-        <div className="space-y-3">
+    <div className="bg-black/20 backdrop-blur-md border-b border-white/10 p-4 lg:p-6">
+      <div className="max-w-4xl mx-auto grid sm:grid-cols-2 gap-4 lg:gap-8">
+        <div className="space-y-2 lg:space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-white font-semibold flex items-center gap-2">
-              <span className="text-2xl">🧠</span>
-              <span>Mental Health</span>
+            <span className="text-white font-semibold flex items-center gap-1 lg:gap-2">
+              <span className="text-lg lg:text-2xl">🧠</span>
+              <span className="text-sm lg:text-base">Mental Health</span>
             </span>
-            <span className="text-white font-bold text-xl">{meters.mentalHealth}%</span>
+            <span className="text-white font-bold text-lg lg:text-xl">{meters.mentalHealth}%</span>
           </div>
           <div className="relative">
-            <div className="w-full bg-black/40 rounded-full h-4 overflow-hidden border border-white/20">
+            <div className="w-full bg-black/40 rounded-full h-3 lg:h-4 overflow-hidden border border-white/20">
               <motion.div
                 className={`h-full bg-gradient-to-r ${getMeterColor(meters.mentalHealth, 'mental')} ${getGlowColor(meters.mentalHealth)} shadow-lg`}
                 initial={{ width: '100%' }}
@@ -48,16 +48,16 @@ export function MeterDisplay({ meters }: MeterDisplayProps) {
           </div>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-2 lg:space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-white font-semibold flex items-center gap-2">
-              <span className="text-2xl">✅</span>
-              <span>Community Trust</span>
+            <span className="text-white font-semibold flex items-center gap-1 lg:gap-2">
+              <span className="text-lg lg:text-2xl">✅</span>
+              <span className="text-sm lg:text-base">Community Trust</span>
             </span>
-            <span className="text-white font-bold text-xl">{meters.communityTrust}%</span>
+            <span className="text-white font-bold text-lg lg:text-xl">{meters.communityTrust}%</span>
           </div>
           <div className="relative">
-            <div className="w-full bg-black/40 rounded-full h-4 overflow-hidden border border-white/20">
+            <div className="w-full bg-black/40 rounded-full h-3 lg:h-4 overflow-hidden border border-white/20">
               <motion.div
                 className={`h-full bg-gradient-to-r ${getMeterColor(meters.communityTrust, 'trust')} ${getGlowColor(meters.communityTrust)} shadow-lg`}
                 initial={{ width: '100%' }}

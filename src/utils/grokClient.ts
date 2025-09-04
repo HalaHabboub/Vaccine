@@ -73,7 +73,7 @@ class GrokClient {
     contextString += ' I need support.'
 
     const messages: GrokMessage[] = [
-      { role: 'system', content: 'You are a crisis counselor. Keep responses under 20 words. Focus on actionable solutions: RESPOND, BLOCK/REPORT, IGNORE, RALLY COMMUNITY. Ask how they feel first.' },
+      { role: 'system', content: 'You are a supportive crisis counselor. Keep responses concise (under 30 words). Ask one simple question to understand their situation better, then gently suggest helpful responses. Be supportive but not overly emotional.' },
       { role: 'user', content: contextString }
     ]
 
